@@ -1,0 +1,27 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@flight-demo/boarding": ["libs/boarding/src/index.ts"],
+      "@flight-demo/booking": ["libs/booking/src/index.ts"],
+      "@flight-demo/checkin": ["libs/checkin/src/index.ts"],
+      "@flight-demo/shared/core": ["libs/shared/core/src/index.ts"],
+      "@flight-demo/shared/logger": ["libs/shared/logger/src/index.ts"],
+      "@flight-demo/shared/state": ["libs/shared/state/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}
