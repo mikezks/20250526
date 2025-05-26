@@ -12,7 +12,6 @@ import { pipe, switchMap } from 'rxjs';
 type BookingState = {
   filter: FlightFilter;
   basket: Record<number, boolean>;
-  flightsEntities: Flight[];
 };
 
 const initialBookingState: BookingState = {
@@ -24,8 +23,7 @@ const initialBookingState: BookingState = {
   basket: {
     3: true,
     5: true
-  },
-  flightsEntities: []
+  }
 };
 
 
@@ -37,7 +35,7 @@ export const BookingStore = signalStore(
   // Selectors: Derived State
   withComputed(store => ({
     delayedFlights: computed(
-      () => store.flightsEntities().filter(flight => flight.delayed)
+      () => store.flightEntities().filter(flight => flight.delayed)
     ),
   })),
   // Updaters
