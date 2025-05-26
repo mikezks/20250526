@@ -17,15 +17,11 @@ import { FlightCardComponent, FlightFilterComponent } from '../../ui-flight';
   templateUrl: './flight-search.component.html'
 })
 export class FlightSearchComponent {
-  private store = inject(BookingStore);
-
-  protected filter = this.store.filter;
-  protected basket = this.store.basket;
-  protected flights = this.store.flights;
+  protected store = inject(BookingStore);
 
   protected search(filter: FlightFilter): void {
     this.store.setFilter(filter);
-    this.store.loadFlights(filter);
+    this.store.loadFlights();
   }
 
   protected delay(flight: Flight): void {
@@ -39,7 +35,7 @@ export class FlightSearchComponent {
       delayed: true
     };
 
-    const flights = this.flights().map(
+    const flights = this.store.flights().map(
       flight => flight.id === newFlight.id ? newFlight : flight
     );
 

@@ -5,21 +5,30 @@ import { FlightService } from '../../data-access/flight.service';
 import { FlightFilter } from '../../model/flight-filter';
 
 
+type BookingState = {
+  filter: FlightFilter;
+  basket: Record<number, boolean>;
+  flights: Flight[];
+};
+
+const initialBookingState: BookingState = {
+  filter: {
+    from: 'London',
+    to: 'New York',
+    urgent: false
+  },
+  basket: {
+    3: true,
+    5: true
+  },
+  flights: []
+};
+
+
 export const BookingStore = signalStore(
   { providedIn: 'root' },
   // State
-  withState({
-    filter: {
-      from: 'London',
-      to: 'New York',
-      urgent: false
-    },
-    basket: {
-      3: true,
-      5: true
-    } as Record<number, boolean>,
-    flights: [] as Flight[]
-  }),
+  withState(initialBookingState),
   // Selectors: Derived State
   withComputed(store => ({
     delayedFlights: computed(
@@ -43,11 +52,11 @@ export const BookingStore = signalStore(
     store,
     flightService = inject(FlightService)
   ) => ({
-    loadFlights: (filter: FlightFilter) => {
+    loadFlights: () => {
       flightService.find(
-        filter.from,
-        filter.to,
-        filter.urgent
+        store.filter().from,
+        store.filter().to,
+        store.filter().urgent
       ).subscribe(
         flights => store.setFlights(flights)
       )
