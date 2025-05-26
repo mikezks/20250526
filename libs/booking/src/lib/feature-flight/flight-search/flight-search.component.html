@@ -14,7 +14,7 @@
       <div *ngIf="flights.length" class="flight-filter-info">
         {{ flights.length }} flights found!
       </div>
-      <button *ngIf="flights.length" (click)="flightEvents.flightsReset()"
+      <button *ngIf="flights.length" (click)="flightEvents.flightsResetTriggered()"
         class="btn btn-default flight-filter-button"
       >Reset</button>
     </app-flight-filter>

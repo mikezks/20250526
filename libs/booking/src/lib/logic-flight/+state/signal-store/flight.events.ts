@@ -8,7 +8,7 @@ export const flightEvents = eventGroup({
   events: {
     flightFilterChanged: type<FlightFilter>(),
     flightsChanged: type<Flight[]>(),
-    flightsReset: type<void>(),
+    flightsResetTriggered: type<void>(),
     flightChanged: type<Flight>(),
     basketChanged: type<{ id: number, selected: boolean }>(),
   }

@@ -50,7 +50,7 @@ export const BookingStore = signalStore(
   withReducer(
     on(flightEvents.flightFilterChanged, ({ payload: filter }) => ({ filter })),
     on(flightEvents.flightsChanged, ({ payload: flights }) => setAllEntities(flights, flightConfig)),
-    on(flightEvents.flightsReset, () => removeAllEntities(flightConfig)),
+    on(flightEvents.flightsResetTriggered, () => removeAllEntities(flightConfig)),
     on(flightEvents.flightChanged, ({ payload: flight }) => setEntity(flight, flightConfig)),
     on(flightEvents.basketChanged, ({ payload: basketUpdate }) => state => ({
         basket: {
