@@ -9,7 +9,7 @@
 
     <app-flight-filter
       [filter]="store.filter()"
-      (searchTrigger)="flightEvents.flightFilterChanged($event)"
+      (filterChanged)="flightEvents.flightFilterChanged($event)"
     >
       <div *ngIf="flights.length" class="flight-filter-info">
         {{ flights.length }} flights found!

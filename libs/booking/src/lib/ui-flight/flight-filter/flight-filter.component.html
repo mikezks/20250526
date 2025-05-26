@@ -1,3 +1,14 @@
+<div class="form-group">
+  <label for="filterSelect">Previous Filters:</label>
+  <select [formControl]="selectedFilterControl" class="form-control" id="filterSelect">
+    @for (filter of localStore.filters(); track filter) {
+      <option [ngValue]="filter">
+        {{filter.from}} - {{filter.to}}
+      </option>
+    }
+  </select>
+</div>
+
 <form [formGroup]="inputFilterForm">
   <div class="form-group">
     <label for="from">From:</label>
@@ -16,7 +27,7 @@
 
   <div class="form-group">
     <button
-      (click)="triggerSearch()"
+      (click)="localStore.triggerSearch()"
       [disabled]="!inputFilterForm.valid"
       class="btn btn-default"
     >
