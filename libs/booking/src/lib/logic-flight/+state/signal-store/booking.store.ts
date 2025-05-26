@@ -1,6 +1,6 @@
 import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, type, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
-import { setAllEntities, setEntity, withEntities } from '@ngrx/signals/entities';
+import { removeAllEntities, setAllEntities, setEntity, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Flight } from '../../model/flight';
 import { computed, inject } from '@angular/core';
@@ -47,6 +47,8 @@ export const BookingStore = signalStore(
       patchState(store, setEntity(flight, { collection: 'flight' })),
     setFlights: (flights: Flight[]) =>
       patchState(store, setAllEntities(flights, { collection: 'flight' })),
+    resetFlights: () =>
+      patchState(store, removeAllEntities({ collection: 'flight' })),
     updateBasket: (id: number, selected: boolean) =>
       patchState(store, state => ({
         basket: {
