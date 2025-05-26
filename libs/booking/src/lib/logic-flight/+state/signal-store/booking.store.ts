@@ -28,26 +28,6 @@ const initialBookingState: BookingState = {
   flightsEntities: []
 };
 
-// Enitiy State Demo:
-/* const flightMap = {
-  entites: {
-    3: {
-      id: 3,
-      from: 'Hamburg',
-      to: 'Graz',
-      date: '2025-05-26',
-      delayed: false
-    },
-    5: {
-      id: 5,
-      from: 'Hamburg',
-      to: 'Graz',
-      date: '2025-05-26',
-      delayed: false
-    }
-  },
-  ids: [5, 3]
-}; */
 
 export const BookingStore = signalStore(
   { providedIn: 'root' },
