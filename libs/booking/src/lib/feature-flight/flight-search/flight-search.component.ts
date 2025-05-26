@@ -19,11 +19,6 @@ import { FlightCardComponent, FlightFilterComponent } from '../../ui-flight';
 export class FlightSearchComponent {
   protected store = inject(BookingStore);
 
-  protected search(filter: FlightFilter): void {
-    this.store.setFilter(filter);
-    this.store.loadFlights();
-  }
-
   protected delay(flight: Flight): void {
     const oldFlight = flight;
     const oldDate = new Date(oldFlight.date);
@@ -40,13 +35,5 @@ export class FlightSearchComponent {
     );
 
     this.store.setFlights(flights);
-  }
-
-  protected updateBasket(id: number, selected: boolean): void {
-    this.store.updateBasket(id, selected);
-  }
-
-  protected reset(): void {
-    this.store.setFlights([]);
   }
 }
