@@ -1,5 +1,6 @@
 import { tapResponse } from '@ngrx/operators';
-import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
+import { patchState, signalStore, type, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
+import { setAllEntities, setEntity, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Flight } from '../../model/flight';
 import { computed, inject } from '@angular/core';
@@ -11,7 +12,7 @@ import { pipe, switchMap } from 'rxjs';
 type BookingState = {
   filter: FlightFilter;
   basket: Record<number, boolean>;
-  flights: Flight[];
+  flightsEntities: Flight[];
 };
 
 const initialBookingState: BookingState = {
@@ -24,24 +25,48 @@ const initialBookingState: BookingState = {
     3: true,
     5: true
   },
-  flights: []
+  flightsEntities: []
 };
 
+// Enitiy State Demo:
+/* const flightMap = {
+  entites: {
+    3: {
+      id: 3,
+      from: 'Hamburg',
+      to: 'Graz',
+      date: '2025-05-26',
+      delayed: false
+    },
+    5: {
+      id: 5,
+      from: 'Hamburg',
+      to: 'Graz',
+      date: '2025-05-26',
+      delayed: false
+    }
+  },
+  ids: [5, 3]
+}; */
 
 export const BookingStore = signalStore(
   { providedIn: 'root' },
   // State
   withState(initialBookingState),
+  withEntities({ entity: type<Flight>(), collection: 'flight' }),
   // Selectors: Derived State
   withComputed(store => ({
     delayedFlights: computed(
-      () => store.flights().filter(flight => flight.delayed)
+      () => store.flightsEntities().filter(flight => flight.delayed)
     ),
   })),
   // Updaters
   withMethods(store => ({
     setFilter: (filter: FlightFilter) => patchState(store, { filter }),
-    setFlights: (flights: Flight[]) => patchState(store, { flights }),
+    setFlight: (flight: Flight) =>
+      patchState(store, setEntity(flight, { collection: 'flight' })),
+    setFlights: (flights: Flight[]) =>
+      patchState(store, setAllEntities(flights, { collection: 'flight' })),
     updateBasket: (id: number, selected: boolean) =>
       patchState(store, state => ({
         basket: {
