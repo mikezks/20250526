@@ -1,4 +1,4 @@
-import { tapResponse } from '@ngrx/operators';
+import { mapResponse, tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, type, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
 import { entityConfig, removeAllEntities, setAllEntities, setEntity, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
@@ -7,6 +7,8 @@ import { computed, inject } from '@angular/core';
 import { FlightService } from '../../data-access/flight.service';
 import { FlightFilter } from '../../model/flight-filter';
 import { pipe, switchMap } from 'rxjs';
+import { Events, on, withEffects, withReducer } from '@ngrx/signals/events';
+import { flightEvents } from './flight.events';
 
 
 type BookingState = {
@@ -45,40 +47,35 @@ export const BookingStore = signalStore(
     ),
   })),
   // Updaters
-  withMethods(store => ({
-    setFilter: (filter: FlightFilter) => patchState(store, { filter }),
-    setFlight: (flight: Flight) =>
-      patchState(store, setEntity(flight, flightConfig)),
-    setFlights: (flights: Flight[]) =>
-      patchState(store, setAllEntities(flights, flightConfig)),
-    resetFlights: () =>
-      patchState(store, removeAllEntities(flightConfig)),
-    updateBasket: (id: number, selected: boolean) =>
-      patchState(store, state => ({
+  withReducer(
+    on(flightEvents.flightFilterChanged, ({ payload: filter }) => ({ filter })),
+    on(flightEvents.flightsChanged, ({ payload: flights }) => setAllEntities(flights, flightConfig)),
+    on(flightEvents.flightsReset, () => removeAllEntities(flightConfig)),
+    on(flightEvents.flightChanged, ({ payload: flight }) => setEntity(flight, flightConfig)),
+    on(flightEvents.basketChanged, ({ payload: basketUpdate }) => state => ({
         basket: {
           ...state.basket,
-          [id]: selected
+          [basketUpdate.id]: basketUpdate.selected
         }
-      }))
-  })),
-  // Side-Effects
-  withMethods((
+      })),
+  ),
+  withEffects((
     store,
+    events = inject(Events),
     flightService = inject(FlightService)
   ) => ({
-    loadFlights: rxMethod<FlightFilter>(pipe(
-      switchMap(filter => flightService.find(
-        filter.from,
-        filter.to,
-        filter.urgent
-      )),
-      tapResponse(
-        flights => store.setFlights(flights),
-        err => console.error(err)
+    loadFlights$: events
+      .on(flightEvents.flightFilterChanged)
+      .pipe(
+        switchMap(({ payload: filter }) => flightService.find(
+          filter.from,
+          filter.to,
+          filter.urgent
+        )),
+        mapResponse({
+          next: flights => flightEvents.flightsChanged(flights),
+          error: err => console.error(err)
+        })
       )
-    ))
-  })),
-  withHooks(store => ({
-    onInit: () => store.loadFlights(store.filter)
   }))
 );

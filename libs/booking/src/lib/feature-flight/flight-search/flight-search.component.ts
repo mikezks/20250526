@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { BookingStore, Flight } from '../../logic-flight';
 import { FlightCardComponent, FlightFilterComponent } from '../../ui-flight';
 import { addDelay } from '../../util-flight/add-delay';
+import { injectDispatch } from '@ngrx/signals/events';
+import { flightEvents } from '../../logic-flight/+state/signal-store/flight.events';
 
 
 @Component({
@@ -19,8 +21,9 @@ import { addDelay } from '../../util-flight/add-delay';
 })
 export class FlightSearchComponent {
   protected store = inject(BookingStore);
+  protected flightEvents = injectDispatch(flightEvents);
 
   protected delay(flight: Flight): void {
-    this.store.setFlight(addDelay(flight));
+    this.flightEvents.flightChanged(addDelay(flight));
   }
 }
