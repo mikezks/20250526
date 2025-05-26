@@ -1,8 +1,8 @@
 import { Routes } from "@angular/router";
 import { provideEffects } from "@ngrx/effects";
 import { provideState } from "@ngrx/store";
-import { TicketEffects } from "./logic-flight/+state/effects";
-import { ticketFeature } from "./logic-flight/+state/reducer";
+import { TicketEffects } from "./logic-flight/+state/redux/effects";
+import { ticketFeature } from "./logic-flight/+state/redux/reducer";
 import { FlightSearchComponent, FlightEditComponent, FlightBookingComponent } from "./feature-flight";
 import { FlightResolver } from "./logic-flight/data-access/flight.resolver";
 

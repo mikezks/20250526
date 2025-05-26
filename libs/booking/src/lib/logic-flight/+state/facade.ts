@@ -1,7 +1,7 @@
 import { inject } from "@angular/core"
 import { Store } from "@ngrx/store"
-import { ticketActions } from "./actions";
-import { ticketFeature } from "./reducer";
+import { ticketActions } from "./redux/actions";
+import { ticketFeature } from "./redux/reducer";
 import { FlightFilter } from "../model/flight-filter";
 import { Flight } from "../model/flight";
 

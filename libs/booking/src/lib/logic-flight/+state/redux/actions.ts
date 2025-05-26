@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from "@ngrx/store";
-import { FlightFilter } from "../model/flight-filter";
-import { Flight } from "../model/flight";
+import { FlightFilter } from "../../model/flight-filter";
+import { Flight } from "../../model/flight";
 
 export const ticketActions = createActionGroup({
   source: 'tickets',

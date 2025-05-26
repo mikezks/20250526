@@ -1,6 +1,6 @@
-import { Basket } from "../model/basket";
-import { Flight } from "../model/flight";
-import { FlightTicket } from "../model/flight-ticket";
+import { Basket } from "../../model/basket";
+import { Flight } from "../../model/flight";
+import { FlightTicket } from "../../model/flight-ticket";
 
 
 export type TicketState = {
